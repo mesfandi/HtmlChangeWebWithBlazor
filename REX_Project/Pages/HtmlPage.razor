@@ -1,0 +1,11 @@
+﻿@page "/finalHtml"
+@inject REX_Project.Data.HtmlService HtmlService
+@((MarkupString)HtmlService.Body)
+
+@code {
+    public string var;
+    void SelectColour()
+    {
+        var = HtmlService.getBody();
+    }
+}

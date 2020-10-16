@@ -1,0 +1,111 @@
+﻿@layout EmptyLayout
+@page "/HtmlChange"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject REX_Project.Data.HtmlService HtmlService
+
+
+
+<div class="row" style="height:80vh; border-bottom: 1px solid #999; font-family:'Open Sans'">
+    <div class="col-9" style="        border-right: 1px solid #999;
+        height: 100%;
+        background: rgba(0,0,0,0.02);
+">
+        <br />
+        <label for="textarea1">Please Insert Your HTML Code</label>
+        <textarea class="form-control" id="textarea1" @bind-value="Body" @bind-value:event="oninput" style="height:90%"></textarea>
+        <br />
+    </div>
+
+
+    <div class="col-3" style="padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+">
+        <div>
+            <label> Please input the variables</label>
+
+            <div class="row" style="font-size:small; margin:auto">
+                <input class="col-5" type="text" placeholder="Variable" @bind-value="key" @bind-value:event="oninput">
+                <input class="col-5" type="text" placeholder="Value" @bind-value="value" @bind-value:event="oninput">
+                <button class="col-2 btn btn-primary" @onclick="add">add</button>
+            </div>
+            <div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Value</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var forecast in VarDict)
+                        {
+                            <tr>
+                                <td>@forecast.Key</td>
+                                <td>@forecast.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <button class="btn btn-primary" @onclick="Submit">SUBMIT</button>
+    </div>
+</div>
+
+<label style="font-family:'Open Sans'">PREVIEW</label>
+
+<div class="col-10" id="compiled">@((MarkupString)Body)</div>
+
+
+
+
+@code
+{
+    [Parameter]
+    public string Body { get; set; } = "<p>This is <b>Name</b></p>";
+    public Dictionary<string, string> VarDict = new Dictionary<string, string>();
+
+    public string key { get; set; } = String.Empty;
+    public string value { get; set; } = String.Empty;
+
+    public void add()
+    {
+        if (key != "" && value != "")
+        {
+            if (!VarDict.ContainsKey(key))
+            {
+                VarDict.Add(key, value);
+            }
+        }
+        key = String.Empty;
+        value = String.Empty;
+        Body = change(Body, VarDict);
+    }
+
+    public void Submit()
+    {
+        HtmlService.setBody(Body);
+        NavigationManager.NavigateTo("/finalHtml");
+    }
+
+
+    public string change(string str, Dictionary<string, string> args)
+    {
+
+        var sb = new StringBuilder(str);
+
+        foreach (var kv in args)
+        {
+            sb.Replace(kv.Key, kv.Value != null ? kv.Value.ToString() : "");
+        }
+        return sb.ToString();
+    }
+
+
+}
