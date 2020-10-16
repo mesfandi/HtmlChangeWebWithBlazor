@@ -1,4 +1,4 @@
-# Html Change Web With Blazor
+# Html Change WebApp With Blazor
 <div>
             <div>
                 In this project you can dynamically change the HTML file. For start, place your HTML in the right TextArea. You can change a parameter by adding the parameter in the left panel. You can preview the result at the bottom of the page. By clicking submit button, the page is navigated to the HTML file that is generated.
