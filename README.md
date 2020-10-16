@@ -12,3 +12,4 @@
                 <h5>Click on <a href="https://rexsampleproject.azurewebsites.net">"HTML CHANGE"</a> to start </h5>
 
             
+<img src="" alt="">
